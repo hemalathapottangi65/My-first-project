@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Quiz App - Advanced Level</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:radial-gradient(circle at top,#2b0040,#000);
+    font-family:Arial, sans-serif;
+    color:#fff;
+}
+
+/* Level Title Outside */
+.level-title{
+    font-size:22px;
+    font-weight:bold;
+    color:#ffae00;
+    margin-bottom:20px;
+    letter-spacing:1px;
+    text-shadow:0 0 10px #ffae00;
+}
+
+/* Quiz Box */
+.box{
+    width:380px;
+    background:#12001a;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 0 25px #ff4da6;
+}
+
+/* Question Title */
+h2{
+    text-align:center;
+    color:#ff4da6;
+}
+
+/* Options */
+.option{
+    border:1px solid #555;
+    padding:10px;
+    margin:8px 0;
+    border-radius:6px;
+    cursor:pointer;
+}
+.option:hover{
+    background:#1f0030;
+}
+.correct{
+    background:#1f8a3b;
+    border-color:#1f8a3b;
+}
+.wrong{
+    background:#b00020;
+    border-color:#b00020;
+}
+
+/* Button */
+button{
+    width:100%;
+    padding:10px;
+    margin-top:15px;
+    border:none;
+    border-radius:6px;
+    background:#ff4da6;
+    color:#fff;
+    cursor:pointer;
+    font-size:16px;
+    display:none;
+}
+
+/* RESULT PAGE */
+.result{
+    display:none;
+    text-align:center;
+}
+
+/* Dynamic Percentage Circle */
+.circle{
+    width:160px;
+    height:160px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:20px auto;
+    font-size:28px;
+    font-weight:bold;
+    background:conic-gradient(#ff4da6 0deg, #333 0deg);
+    position:relative;
+}
+
+.circle span{
+    position:absolute;
+    width:120px;
+    height:120px;
+    background:#12001a;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* Result Buttons */
+.btns{
+    display:flex;
+    gap:10px;
+}
+.btns button{
+    display:block;
+}
+</style>
+</head>
+
+<body>
+
+<div class="level-title">Advanced Level</div>
+
+<div class="box">
+
+<!-- QUIZ SECTION -->
+<div id="quiz">
+    <h2 id="question">Question</h2>
+    <div id="options"></div>
+    <button id="nextBtn" onclick="nextQuestion()">Next</button>
+</div>
+
+<!-- RESULT SECTION -->
+<div class="result" id="result">
+    <h2>Quiz Result!</h2>
+
+    <div class="circle" id="percent">
+        <span id="percentText">0%</span>
+    </div>
+
+    <p>Your Score <span style="color:#4da6ff" id="score"></span></p>
+
+    <div class="btns">
+        <button onclick="location.reload()">Try Again</button>
+        <button onclick="location.href='anjali9.html'">Submit</button>
+    </div>
+</div>
+
+</div>
+
+<script>
+
+/* Advanced Questions */
+const questions = [
+    {
+        q:"Which HTML5 element is used for drawing graphics via JavaScript?",
+        options:["<canvas>","<graphic>","<draw>"],
+        answer:0
+    },
+    {
+        q:"Which CSS property is used to create flexible layouts?",
+        options:["grid","flexbox","float"],
+        answer:1
+    },
+    {
+        q:"Which method converts JSON to JavaScript object?",
+        options:["JSON.parse()","JSON.stringify()","JSON.convert()"],
+        answer:0
+    },
+    {
+        q:"Which keyword declares block-scoped variable in JS?",
+        options:["var","let","define"],
+        answer:1
+    },
+    {
+        q:"Which attribute is used for responsive images?",
+        options:["srcset","resize","media"],
+        answer:0
+    }
+];
+
+let index = 0;
+let score = 0;
+let answered = false;
+
+const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
+const nextBtn = document.getElementById("nextBtn");
+
+function loadQuestion(){
+    answered = false;
+    nextBtn.style.display="none";
+    questionEl.innerHTML = questions[index].q;
+    optionsEl.innerHTML = "";
+
+    questions[index].options.forEach((opt,i)=>{
+        const div = document.createElement("div");
+        div.className="option";
+        div.innerText=opt;
+        div.onclick=()=>checkAnswer(div,i);
+        optionsEl.appendChild(div);
+    });
+}
+
+function checkAnswer(el,i){
+    if(answered) return;
+    answered = true;
+    nextBtn.style.display="block";
+
+    if(i === questions[index].answer){
+        el.classList.add("correct");
+        score++;
+    }else{
+        el.classList.add("wrong");
+        optionsEl.children[questions[index].answer].classList.add("correct");
+    }
+}
+
+function nextQuestion(){
+    index++;
+    if(index < questions.length){
+        loadQuestion();
+    }else{
+        showResult();
+    }
+}
+
+function showResult(){
+    document.getElementById("quiz").style.display="none";
+    document.getElementById("result").style.display="block";
+
+    let percent = Math.round((score / questions.length) * 100);
+
+    const circle = document.getElementById("percent");
+    const percentText = document.getElementById("percentText");
+
+    percentText.innerText = percent + "%";
+    document.getElementById("score").innerText = score + " out of " + questions.length;
+
+    let degree = (percent / 100) * 360;
+
+    circle.style.background = 
+        `conic-gradient(#ff4da6 ${degree}deg, #333 ${degree}deg)`;
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>

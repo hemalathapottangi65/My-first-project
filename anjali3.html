@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HTML Code Quiz</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;   /* important */
+    justify-content:center;
+    align-items:center;
+    background:radial-gradient(circle at top,#2b0040,#000);
+    font-family:Arial, sans-serif;
+    color:#fff;
+}
+
+/* ✅ Level outside box */
+.level-title{
+    font-size:20px;
+    color:#2aff88;
+    margin-bottom:15px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.quiz-box{
+    width:380px;
+    background:#12001a;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 20px #ff4da6;
+}
+
+h2{
+    text-align:center;
+    color:#ff4da6;
+    margin-top:0;
+}
+
+.score{
+    text-align:right;
+    margin-bottom:10px;
+}
+
+.question{
+    margin:15px 0;
+}
+
+.option{
+    border:1px solid #555;
+    padding:10px;
+    margin:8px 0;
+    border-radius:6px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.option:hover{
+    background:#2a003a;
+}
+
+.option.correct{
+    background:#1e7f3a;
+    border-color:#2aff88;
+}
+
+.option.wrong{
+    background:#7f1e1e;
+    border-color:#ff4d4d;
+}
+
+.footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:15px;
+}
+
+button{
+    padding:8px 20px;
+    border:none;
+    border-radius:6px;
+    background:#555;
+    color:#fff;
+    cursor:not-allowed;
+}
+
+button.active{
+    background:#ff4da6;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ✅ Now outside the box -->
+<h1><div class="level-title">Basic Level</div></h1>
+
+<div class="quiz-box">
+    <h2>HTML Code Quiz</h2>
+
+    <div class="score">Score: <span id="score">0</span></div>
+
+    <div class="question">
+        <strong>1. What does HTML stand for?</strong>
+    </div>
+
+    <div class="option" onclick="selectOption(this,false)">
+        A. Hyper Type Multi Language
+    </div>
+    <div class="option" onclick="selectOption(this,false)">
+        B. Hyper Text Multiple Language
+    </div>
+    <div class="option" onclick="selectOption(this,true)">
+        C. Hyper Text Markup Language
+    </div>
+    <div class="option" onclick="selectOption(this,false)">
+        D. Home Text Multi Language
+    </div>
+
+    <div class="footer">
+        <span>1 of 5 Questions</span>
+        <button id="nextBtn">Next</button>
+    </div>
+</div>
+
+<script>
+let score = 0;
+let answered = false;
+
+function selectOption(element, isCorrect){
+    if(answered) return;
+    answered = true;
+
+    const options = document.querySelectorAll('.option');
+    options.forEach(opt => opt.style.pointerEvents = 'none');
+
+    if(isCorrect){
+        element.classList.add('correct');
+        score++;
+        document.getElementById('score').innerText = score;
+    }else{
+        element.classList.add('wrong');
+        options.forEach(opt=>{
+            if(opt.innerText.includes("Markup")){
+                opt.classList.add('correct');
+            }
+        });
+    }
+
+    const nextBtn = document.getElementById('nextBtn');
+    nextBtn.classList.add('active');
+    nextBtn.style.cursor = "pointer";
+}
+
+document.getElementById("nextBtn").onclick = function () {
+    if (this.classList.contains("active")) {
+        window.location.href = "anjali4.html?score=" + score;
+    }
+};
+</script>
+
+</body>
+</html>
